@@ -3,4 +3,7 @@
     <string name="user">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="login">Iniciar sesión</string>
+    <string name="my_plants">Mis plantas</string>
+    <string name="weather">Clima</string>
+    <string name="account">Cuenta</string>
 </resources>
