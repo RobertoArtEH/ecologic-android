@@ -1,13 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rain"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/weather"
-        android:textSize="50sp"
-        android:gravity="center"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_today"
+            style="@style/TextWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/TextWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sábado, 23 Nov"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/tv_temperature"
+            style="@style/TextWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="28°C"
+            android:textSize="70sp" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            style="@style/TextWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Torreón, Coahuila"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_weather_background">
+
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/item_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23 Nov"
+                        android:background="@drawable/card_background"
+                        android:gravity="center_horizontal"
+                        android:layout_marginBottom="15dp"
+                        style="@style/TextMedium"
+                        android:padding="15dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:background="@drawable/card_background"
+                        android:paddingTop="30dp"
+                        android:paddingBottom="30dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_cloud"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="28°C"
+                            style="@style/TextMedium"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+
+</LinearLayout>
