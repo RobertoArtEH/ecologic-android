@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Eco-logic</string>
-    <string name="user">Usuario</string>
+    <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="login">Iniciar sesión</string>
+    <string name="register_link">¿No tienes cuenta? <u>Registrate</u></string>
     <string name="my_plants">Mis plantas</string>
     <string name="weather">Clima</string>
     <string name="account">Cuenta</string>

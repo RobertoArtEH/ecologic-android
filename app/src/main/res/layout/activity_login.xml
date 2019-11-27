@@ -42,11 +42,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="@string/user"
+            android:text="@string/email"
             android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
         <EditText
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -60,6 +61,7 @@
             android:textSize="15sp" />
 
         <EditText
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -72,6 +74,16 @@
             android:background="@drawable/btn_primary"
             android:text="@string/login"
             android:textColor="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_link"
+            android:layout_marginTop="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorBlack"
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 
