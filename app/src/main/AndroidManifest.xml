@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.eco_logic">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BottomNavigationActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".BottomNavigationActivity" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"

@@ -8,4 +8,7 @@
     <string name="weather">Clima</string>
     <string name="account">Cuenta</string>
     <string name="today">HOY</string>
+    <string name="register">Registrarse</string>
+    <string name="user">Nombre</string>
+    <string name="registro">Registro</string>
 </resources>
