@@ -53,8 +53,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login();
                 break;
             case R.id.tv_register:
-                // Sustituir por Intent al registro
-                Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
                 break;
         }
     }
