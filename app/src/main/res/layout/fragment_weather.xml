@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_weather"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/rain"
+    android:background="#CCC"
     android:orientation="vertical">
 
     <LinearLayout
@@ -26,7 +27,6 @@
             style="@style/TextWeather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sábado, 23 Nov"
             android:textSize="30sp" />
 
         <TextView
@@ -35,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="28°C"
             android:textSize="70sp" />
 
         <TextView
@@ -67,44 +66,44 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <TextView
+                        style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23 Nov"
+                        android:layout_marginBottom="15dp"
                         android:background="@drawable/card_background"
                         android:gravity="center_horizontal"
-                        android:layout_marginBottom="15dp"
-                        style="@style/TextMedium"
-                        android:padding="15dp"/>
+                        android:padding="15dp"
+                        android:text="23 Nov" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/card_background"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:background="@drawable/card_background"
-                        android:paddingTop="30dp"
-                        android:paddingBottom="30dp"
                         android:paddingLeft="15dp"
-                        android:paddingRight="15dp">
+                        android:paddingTop="30dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="30dp">
 
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/ic_cloud"/>
+                            android:src="@drawable/ic_cloud" />
 
                         <TextView
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:text="28°C"
-                            style="@style/TextMedium"/>
+                            android:text="28°C" />
 
                     </LinearLayout>
 

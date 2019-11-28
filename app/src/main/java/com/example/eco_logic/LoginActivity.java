@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.btn_login:
                 login();
+                // Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                // startActivity(intent);
                 break;
             case R.id.tv_register:
                 // Sustituir por Intent al registro
@@ -83,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
                     startActivity(intent);
+                    finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
