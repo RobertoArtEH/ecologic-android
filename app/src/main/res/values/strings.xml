@@ -8,7 +8,15 @@
     <string name="weather">Clima</string>
     <string name="account">Cuenta</string>
     <string name="today">HOY</string>
+    <string name="date">Fecha</string>
+    <string name="temperature">°C</string>
     <string name="register">Registrarse</string>
     <string name="user">Nombre</string>
     <string name="registro">Registro</string>
+    <string name="broken_clouds">Nubes dispersas</string>
+    <string name="rain">Lluvia</string>
+    <string name="clearsky">Despejado</string>
+    <string name="snow">Nieve</string>
+    <string name="mist">Niebla</string>
+    <string name="thunderstorm">Tormenta eléctrica</string>
 </resources>

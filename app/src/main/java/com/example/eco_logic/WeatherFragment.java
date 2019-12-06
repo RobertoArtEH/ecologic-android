@@ -5,12 +5,15 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -44,7 +48,7 @@ import java.util.concurrent.Executor;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class WeatherFragment extends Fragment {
+public class WeatherFragment extends Fragment implements View.OnClickListener {
     protected RequestQueue fRequestQueue;
     private VolleySingleton volley;
     private FusedLocationProviderClient client;
@@ -55,6 +59,19 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_weather, container, false);
+
+        ImageView refresh = view.findViewById(R.id.refresh);
+        refresh.setOnClickListener(this);
+
+        Bundle bundle = getArguments();
+        String temp = bundle.getString("temp", "°C");
+        String description = bundle.getString("description", "clear sky");
+        String location = bundle.getString("location", "México");
+
+        setBackground(description);
+        setTemperature(temp);
+        setLocation(location);
+        setDate();
 
         return view;
     }
@@ -68,29 +85,29 @@ public class WeatherFragment extends Fragment {
 
         requestPermission();
 
-        client = LocationServices.getFusedLocationProviderClient(getActivity());
-
         // Check location permission
         if (ContextCompat.checkSelfPermission( getActivity(), ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
-        // Get location
-        client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location != null) {
-                    Double lat = location.getLatitude();
-                    Double lon = location.getLongitude();
-
-                    setCurrentInfo(lat, lon);
-                }
-            }
-        });
     }
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, 1);
+    }
+
+    private void setDate() {
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        String day = new SimpleDateFormat("EEEE, d MMM", new Locale("es", "ES")).format(date.getTime());
+        String upperDay = day.substring(0,1).toUpperCase() + day.substring(1);
+
+        TextView tvDate = view.findViewById(R.id.tv_date);
+        tvDate.setText(upperDay);
+    }
+
+    private void setLocation(String location) {
+        TextView tvLocation = view.findViewById(R.id.tv_location);
+        tvLocation.setText(location);
     }
 
     private void setCurrentInfo(Double lat, Double lon) {
@@ -108,15 +125,6 @@ public class WeatherFragment extends Fragment {
 
         String url = builder.build().toString();
 
-        // Set date
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        String day = new SimpleDateFormat("EEEE, d MMM", new Locale("es", "ES")).format(date.getTime());
-        String upperDay = day.substring(0,1).toUpperCase() + day.substring(1);
-
-        TextView tvDate = view.findViewById(R.id.tv_date);
-        tvDate.setText(upperDay);
-
         // OpenWeather API
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -131,6 +139,11 @@ public class WeatherFragment extends Fragment {
 
                     setBackground(description);
 
+                    // Location
+                    String location = response.getString("name");
+
+                    setLocation(location);
+
                     // Temperature
                     JSONObject main = response.getJSONObject("main");
                     double getTemp = main.getDouble("temp");
@@ -139,8 +152,7 @@ public class WeatherFragment extends Fragment {
                     int finalTemp = (int) getTemp;
                     String temp = finalTemp + "°C";
 
-                    TextView tvTemperature = view.findViewById(R.id.tv_temperature);
-                    tvTemperature.setText(temp);
+                    setTemperature(temp);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -155,30 +167,69 @@ public class WeatherFragment extends Fragment {
         fRequestQueue.add(request);
     }
 
+    private void setTemperature(String temp) {
+        TextView tvTemperature = view.findViewById(R.id.tv_temperature);
+        tvTemperature.setText(temp);
+    }
+
     private void setBackground(String description) {
         LinearLayout linearLayout = view.findViewById(R.id.ll_weather);
+        ImageView icWeather = view.findViewById(R.id.ic_today);
+        TextView tvWeather = view.findViewById(R.id.tv_today_desc);
 
         switch (description) {
-            case "few clouds":
             case "scattered clouds":
             case "broken clouds":
                 linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.clouds));
+                icWeather.setImageResource(R.drawable.ic_broken_clouds);
+                tvWeather.setText(R.string.broken_clouds);
                 break;
             case "shower rain":
             case "rain":
-            case "thunderstorm":
                 linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.rain));
+                icWeather.setImageResource(R.drawable.ic_rain);
+                tvWeather.setText(R.string.rain);
+                break;
+            case "thunderstorm":
+                linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.thunderstorm));
+                icWeather.setImageResource(R.drawable.ic_rain);
+                tvWeather.setText(R.string.thunderstorm);
                 break;
             case "clear sky":
+            case "few clouds":
                 linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.clearsky));
+                icWeather.setImageResource(R.drawable.ic_sun);
+                tvWeather.setText(R.string.clearsky);
                 break;
             case "snow":
                 linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.snow));
+                icWeather.setImageResource(R.drawable.ic_snow);
+                tvWeather.setText(R.string.snow);
                 break;
             case "mist":
             case "haze":
                 linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.mist));
+                icWeather.setImageResource(R.drawable.ic_mist);
+                tvWeather.setText(R.string.mist);
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        // Get location
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location != null) {
+                    Double lat = location.getLatitude();
+                    Double lon = location.getLongitude();
+
+                    setCurrentInfo(lat, lon);
+                }
+            }
+        });
     }
 }

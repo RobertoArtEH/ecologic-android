@@ -44,19 +44,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    String loginUrl = "http://home4.uttics.com/api/login";
+    String loginUrl = "http://ecologic.uttics.com/api/login";
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
                 login();
-                // Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
-                // startActivity(intent);
+                // Intent loginIntent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                // startActivity(loginIntent);
                 break;
             case R.id.tv_register:
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
                 break;
         }
     }
