@@ -23,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +43,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -52,6 +55,8 @@ public class WeatherFragment extends Fragment implements View.OnClickListener {
     protected RequestQueue fRequestQueue;
     private VolleySingleton volley;
     private FusedLocationProviderClient client;
+
+    RecyclerView recyclerView;
 
     View view;
 
@@ -68,6 +73,15 @@ public class WeatherFragment extends Fragment implements View.OnClickListener {
         String description = bundle.getString("description", "clear sky");
         String location = bundle.getString("location", "México");
 
+        // RecylerView
+        ArrayList<Clima> weatherList = BottomNavigationActivity.weatherList;
+        recyclerView = view.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        AdapterWeather adapter = new AdapterWeather(weatherList);
+        recyclerView.setAdapter((adapter));
+
+        // Load info
         setBackground(description);
         setTemperature(temp);
         setLocation(location);
@@ -99,10 +113,10 @@ public class WeatherFragment extends Fragment implements View.OnClickListener {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         String day = new SimpleDateFormat("EEEE, d MMM", new Locale("es", "ES")).format(date.getTime());
-        String upperDay = day.substring(0,1).toUpperCase() + day.substring(1);
+        day = day.substring(0,1).toUpperCase() + day.substring(1);
 
         TextView tvDate = view.findViewById(R.id.tv_date);
-        tvDate.setText(upperDay);
+        tvDate.setText(day);
     }
 
     private void setLocation(String location) {
@@ -135,7 +149,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener {
                     JSONObject weatherObj = weather.getJSONObject(0);
                     String description = weatherObj.getString("description");
 
-                    // Toast.makeText(getActivity().getApplicationContext(), description, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), description, Toast.LENGTH_SHORT).show();
 
                     setBackground(description);
 
@@ -178,6 +192,16 @@ public class WeatherFragment extends Fragment implements View.OnClickListener {
         TextView tvWeather = view.findViewById(R.id.tv_today_desc);
 
         switch (description) {
+            case "dust":
+                linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.dust));
+                icWeather.setImageResource(R.drawable.ic_mist);
+                tvWeather.setText(R.string.dust);
+                break;
+            case "overcast clouds":
+                linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.overcast));
+                icWeather.setImageResource(R.drawable.ic_clouds);
+                tvWeather.setText(R.string.overcast_clouds);
+                break;
             case "scattered clouds":
             case "broken clouds":
                 linearLayout.setBackground(getActivity().getResources().getDrawable(R.drawable.clouds));

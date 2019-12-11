@@ -1,22 +1,38 @@
 <resources>
     <string name="app_name">Eco-logic</string>
+    <!-- Formularios -->
     <string name="email">Email</string>
     <string name="password">Contraseña</string>
     <string name="login">Iniciar sesión</string>
     <string name="register_link">¿No tienes cuenta? <u>Registrate</u></string>
-    <string name="my_plants">Mis plantas</string>
-    <string name="weather">Clima</string>
-    <string name="account">Cuenta</string>
-    <string name="today">HOY</string>
-    <string name="date">Fecha</string>
-    <string name="temperature">°C</string>
     <string name="register">Registrarse</string>
     <string name="user">Nombre</string>
     <string name="registro">Registro</string>
+    <string name="logout">Cerrar sesión</string>
+    <!-- Secciones -->
+    <string name="my_plants">Mis plantas</string>
+    <string name="weather">Clima</string>
+    <string name="account">Cuenta</string>
+    <!-- Seccion de clima -->
+    <string name="today">HOY</string>
+    <string name="date">Fecha</string>
+    <string name="temperature_value">°C</string>
+    <!-- Descripción de climas -->
     <string name="broken_clouds">Nubes dispersas</string>
     <string name="rain">Lluvia</string>
     <string name="clearsky">Despejado</string>
     <string name="snow">Nieve</string>
     <string name="mist">Niebla</string>
+    <string name="dust">Polvo</string>
     <string name="thunderstorm">Tormenta eléctrica</string>
+    <string name="overcast_clouds">Nublado</string>
+    <!-- Seccion de mis plantas -->
+    <string name="enviroment_title">Ambiente</string>
+    <string name="reports">Reportes</string>
+    <string name="my_plants_description">No olvides regar tus plantas.</string>
+    <string name="humidity">Humedad</string>
+    <string name="temperature">Temperatura</string>
+    <string name="btn_water">Regar</string>
+    <string name="last_water">Regado hace...</string>
+    <string name="reports_title">Registro de riego</string>
 </resources>

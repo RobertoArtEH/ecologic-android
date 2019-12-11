@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,9 +25,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     protected RequestQueue fRequestQueue;
     private VolleySingleton volley;
+
+    String humidity, envHumidity, envTemperature;
+
+    String userkey = "05037193ee4a460eb2e5ba8bc1e91a45";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
 
+        getPlantHumidity();
+        getEnvironmentHumidity();
+        getEnvironmentTemperature();
     }
 
     String loginUrl = "http://ecologic.uttics.com/api/login";
@@ -51,8 +63,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.btn_login:
                 login();
-                // Intent loginIntent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
-                // startActivity(loginIntent);
+                //Intent loginIntent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                //startActivity(loginIntent);
                 break;
             case R.id.tv_register:
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -75,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             data.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
+            Toast.makeText(this, "Ha ocurrido un error.", Toast.LENGTH_SHORT).show();
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, loginUrl, data, new Response.Listener<JSONObject>() {
@@ -83,7 +96,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     String token = response.getString("token");
 
+                    Bundle bundlePlants = new Bundle();
+                    bundlePlants.putString("humidity", humidity);
+                    bundlePlants.putString("envHumidity", envHumidity);
+                    bundlePlants.putString("envTemperature", envTemperature);
+
                     Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                    intent.putExtras(bundlePlants);
                     startActivity(intent);
                     finish();
                 } catch (JSONException e) {
@@ -94,9 +113,109 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("OnErrorResponse1: ", error.toString());
+                Toast.makeText(LoginActivity.this, "Correo o contraseña incorrecta", Toast.LENGTH_LONG).show();
             }
         });
 
         fRequestQueue.add(jsonObjectRequest);
+    }
+
+    private void getPlantHumidity() {
+        String url = "https://io.adafruit.com/api/v2/Cesar_utt/feeds/humedadplantas/data/last";
+
+        // OpenWeather API
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    int getHumidity = response.getInt("value");
+                    humidity = getHumidity + "%";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("OnErrorResponse: ", error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("X-AIO-Key", userkey);
+
+                return params;
+            }
+        };
+
+        fRequestQueue.add(request);
+    }
+
+    private void getEnvironmentHumidity() {
+        String url = "https://io.adafruit.com/api/v2/Cesar_utt/feeds/humedad/data/last";
+
+        // OpenWeather API
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    int getHumidity = response.getInt("value");
+                    envHumidity = getHumidity + "%";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("OnErrorResponse: ", error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("X-AIO-Key", userkey);
+
+                return params;
+            }
+        };
+
+        fRequestQueue.add(request);
+    }
+
+    private void getEnvironmentTemperature() {
+        String url = "https://io.adafruit.com/api/v2/Cesar_utt/feeds/temperatura/data/last";
+
+        // OpenWeather API
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    int getTemperature = response.getInt("value");
+                    envTemperature = getTemperature + "°C";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("OnErrorResponse: ", error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("X-AIO-Key", userkey);
+
+                return params;
+            }
+        };
+
+        fRequestQueue.add(request);
     }
 }

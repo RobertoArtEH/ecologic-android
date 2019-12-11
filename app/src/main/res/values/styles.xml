@@ -22,20 +22,31 @@
         <item name="android:shadowRadius">10</item>
     </style>
 
-    <style name="TextWeather" parent="TextShadowSecondary">
+    <style name="TextBoldWhite" parent="TextShadowSecondary">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-    <style name="TextMedium">
+    <style name="TextBoldBlack">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="TextMediumBlack">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorBlack</item>
     </style>
 
-    <style name="TextDate">
+    <style name="TextMediumWhite">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorWhite</item>
     </style>
+
+    <style name="textSmallBlack">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
 </resources>

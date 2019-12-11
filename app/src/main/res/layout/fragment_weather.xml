@@ -10,13 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_today"
-            style="@style/TextWeather"
+            style="@style/TextBoldWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/today"
@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/tv_date"
-            style="@style/TextWeather"
+            style="@style/TextBoldWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/date"
@@ -32,11 +32,11 @@
 
         <TextView
             android:id="@+id/tv_temperature"
-            style="@style/TextWeather"
+            style="@style/TextBoldWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/temperature"
+            android:text="@string/temperature_value"
             android:textSize="40sp" />
 
         <LinearLayout
@@ -51,7 +51,7 @@
 
             <TextView
                 android:id="@+id/tv_today_desc"
-                style="@style/TextWeather"
+                style="@style/TextBoldWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
@@ -62,7 +62,7 @@
 
         <TextView
             android:id="@+id/tv_location"
-            style="@style/TextWeather"
+            style="@style/TextBoldWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
@@ -77,72 +77,19 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/card_weather_background">
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_top_background">
 
-        <HorizontalScrollView
-            android:layout_width="fill_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="none">
+            android:layout_marginTop="5dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"/>
 
-            <LinearLayout
-                android:id="@+id/item_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/TextDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/card_background_date"
-                        android:gravity="center_horizontal"
-                        android:padding="15dp"
-                        android:text="23 Nov" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/card_background"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="40dp"
-                            android:src="@drawable/ic_rain" />
-
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="40dp"
-                            android:text="28°C" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
