@@ -34,5 +34,6 @@
     <string name="temperature">Temperatura</string>
     <string name="btn_water">Regar</string>
     <string name="last_water">Regado hace...</string>
+    <!-- Reportes -->
     <string name="reports_title">Registro de riego</string>
 </resources>

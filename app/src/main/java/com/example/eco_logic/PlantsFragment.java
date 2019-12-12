@@ -24,7 +24,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PlantsFragment extends Fragment implements View.OnClickListener {
@@ -104,15 +108,28 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         water();
-        //registerWater();
+        registerWater();
     }
 
     private void registerWater() {
-        String url = "";
+        String url = "http://ecologic.uttics.com/api/report";
         final JSONObject data = new JSONObject();
 
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        String day = new SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES")).format(date);
+
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        String time = hour + ":" + minute;
+
+        Toast.makeText(getActivity().getApplicationContext(), time, Toast.LENGTH_LONG).show();
+
         try {
-            data.put("value", "ON");
+            data.put("date", day);
+            data.put("time", time);
+            data.put("user", "Roberto");
+            data.put("humidity", envHumidity);
         } catch (JSONException e) {
             e.printStackTrace();
         }
