@@ -132,8 +132,6 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         int minute = calendar.get(Calendar.MINUTE);
         String time = hour + ":" + minute;
 
-        Toast.makeText(getActivity().getApplicationContext(), time, Toast.LENGTH_LONG).show();
-
         try {
             data.put("date", day);
             data.put("time", time);
@@ -304,7 +302,7 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         strHumidity = strHumidity.substring(0, strHumidity.length() - 1);
         int humidity = Integer.parseInt(strHumidity);
 
-        if(humidity < 10) {
+        if(humidity < 20) {
             disableWaterButton();
         }
     }

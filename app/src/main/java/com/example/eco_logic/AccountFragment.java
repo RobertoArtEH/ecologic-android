@@ -107,6 +107,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
                 Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                getActivity().finish();
 
                 return params;
             }

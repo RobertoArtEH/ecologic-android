@@ -70,7 +70,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login();
                 break;
             case R.id.tv_register:
+                Bundle bundlePlants = new Bundle();
+                bundlePlants.putString("humidity", humidity);
+                bundlePlants.putString("envHumidity", envHumidity);
+                bundlePlants.putString("envTemperature", envTemperature);
+                
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                registerIntent.putExtras(bundlePlants);
                 startActivity(registerIntent);
                 break;
         }

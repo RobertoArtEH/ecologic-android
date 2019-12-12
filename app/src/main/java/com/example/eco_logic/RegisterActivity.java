@@ -24,10 +24,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected RequestQueue fRequestQueue;
     private VolleySingleton volley;
 
+    String humidity, envHumidity, envTemperature;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null) {
+            humidity = extras.getString("humidity");
+            envHumidity = extras.getString("envHumidity");
+            envTemperature = extras.getString("envTemperature");
+        }
+
         volley = VolleySingleton.getInstance(this.getApplicationContext());
         fRequestQueue = volley.getRequestQueue();
 
@@ -62,9 +73,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, data, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Bundle bundlePlants = new Bundle();
+                bundlePlants.putString("humidity", humidity);
+                bundlePlants.putString("envHumidity", envHumidity);
+                bundlePlants.putString("envTemperature", envTemperature);
+
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.putExtras(bundlePlants);
                 startActivity(intent);
-                Toast.makeText(RegisterActivity.this, "¡Registro con éxito!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "¡Registro éxitoso!", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
