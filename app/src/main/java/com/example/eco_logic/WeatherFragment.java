@@ -149,7 +149,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener {
                     JSONObject weatherObj = weather.getJSONObject(0);
                     String description = weatherObj.getString("description");
 
-                    Toast.makeText(getActivity().getApplicationContext(), description, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getActivity().getApplicationContext(), description, Toast.LENGTH_SHORT).show();
 
                     setBackground(description);
 

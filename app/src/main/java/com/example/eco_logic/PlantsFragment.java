@@ -1,5 +1,6 @@
 package com.example.eco_logic;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class PlantsFragment extends Fragment implements View.OnClickListener {
     protected RequestQueue fRequestQueue;
     private VolleySingleton volley;
@@ -43,10 +46,16 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
 
     String humidity, envHumidity, envTemperature;
 
+    String name;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_plants, container, false);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences("credenciales", MODE_PRIVATE);
+
+        name = preferences.getString("name", "Unknown");
 
         Button btnWater = view.findViewById(R.id.btn_water);
         btnWater.setOnClickListener(this);
@@ -128,7 +137,7 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         try {
             data.put("date", day);
             data.put("time", time);
-            data.put("user", "Roberto");
+            data.put("user", name);
             data.put("humidity", envHumidity);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -295,7 +304,7 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         strHumidity = strHumidity.substring(0, strHumidity.length() - 1);
         int humidity = Integer.parseInt(strHumidity);
 
-        if(humidity < 20) {
+        if(humidity < 10) {
             disableWaterButton();
         }
     }
