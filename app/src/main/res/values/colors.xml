@@ -6,4 +6,5 @@
     <color name="colorWhite">#fff</color>
     <color name="colorBlack">#000</color>
     <color name="colorBlackTransparent">#4D000000</color>
+    <color name="colorAlert">#FFBEBE</color>
 </resources>

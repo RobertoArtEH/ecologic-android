@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -22,9 +23,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +51,8 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
 
     String name;
 
+    String lastDate, lastTime;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,9 +69,12 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         humidity = bundle.getString("humidity", "%");
         envHumidity = bundle.getString("envHumidity", "%");
         envTemperature = bundle.getString("envTemperature", "°C");
+        lastDate = bundle.getString("lastDate");
+        lastTime = bundle.getString("lastTime");
 
         buttonStatus(humidity);
 
+        setLastInfo(lastDate, lastTime);
         setHumidity(humidity);
         setEnvironmentHumidity(envHumidity);
         setEnvironmentTemperature(envTemperature);
@@ -78,7 +86,9 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
                 getPlantHumidity();
                 getEnvironmentHumidity();
                 getEnvironmentTemperature();
+                getLastWater();
 
+                setLastInfo(lastDate, lastTime);
                 buttonStatus(humidity);
                 setHumidity(humidity);
                 setEnvironmentHumidity(envHumidity);
@@ -97,6 +107,61 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
 
         volley = VolleySingleton.getInstance(getActivity().getApplicationContext());
         fRequestQueue = volley.getRequestQueue();
+    }
+
+    private void setLastInfo(String lastDate, String lastTime) {
+        //TextView tvDate = view.findViewById(R.id.last_date);
+        TextView tvTime = view.findViewById(R.id.last_time);
+
+        String dateString = lastDate + " " + lastTime;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        Date convertedDate = new Date();
+        Date currentDate = new Date();
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        String day = new SimpleDateFormat("dd-MM-yyyy", new Locale("es", "ES")).format(date);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        String time = hour + ":" + minute;
+
+        String current = day + " " + time;
+
+        try {
+            convertedDate = dateFormat.parse(dateString);
+            currentDate = dateFormat.parse(current);
+
+            long different  = currentDate.getTime() - convertedDate.getTime();
+            long secondsInMilli = 1000;
+            long minutesInMilli = secondsInMilli * 60;
+            long hoursInMilli = minutesInMilli * 60;
+            long daysInMilli = hoursInMilli * 24;
+
+            long elapsedDays = different / daysInMilli;
+            different = different % daysInMilli;
+
+            long elapsedHours = different / hoursInMilli;
+            different = different % hoursInMilli;
+
+            long elapsedMinutes = different / minutesInMilli;
+            different = different % minutesInMilli;
+
+            long elapsedSeconds = different / secondsInMilli;
+
+            if(elapsedDays == 0 && elapsedHours == 0 && elapsedMinutes > 0) {
+                tvTime.setText(elapsedMinutes + " min.");
+            } else if(elapsedDays > 0) {
+                tvTime.setText(elapsedDays + " dias, " + elapsedHours + " h");
+            } else if(elapsedDays == 0 && elapsedHours > 0) {
+                tvTime.setText(elapsedHours + " h, " + elapsedMinutes + "min.");
+            } else {
+                tvTime.setText("Ahora");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setHumidity(String humidity) {
@@ -305,6 +370,11 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         if(humidity < 20) {
             disableWaterButton();
         }
+
+        if(humidity > 40) {
+            CardView cardView = view.findViewById(R.id.cv_humidity);
+            cardView.setCardBackgroundColor(getActivity().getResources().getColor(R.color.colorAlert));
+        }
     }
 
     private void disableWaterButton() {
@@ -313,5 +383,31 @@ public class PlantsFragment extends Fragment implements View.OnClickListener {
         btnWater.setBackgroundResource(R.drawable.btn_secondary);
         btnWater.setEnabled(false);
         btnWater.setClickable(false);
+    }
+
+    public void getLastWater() {
+        String url = "http://ecologic.uttics.com/api/last";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray reports = response.getJSONArray("reports");
+                    JSONObject obj = reports.getJSONObject(0);
+
+                    lastDate = obj.getString("date");
+                    lastTime = obj.getString("time");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("OnErrorResponse: ", error.toString());
+            }
+        });
+
+        fRequestQueue.add(request);
     }
 }

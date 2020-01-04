@@ -35,6 +35,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     String humidity, envHumidity, envTemperature;
 
+    String lastDate, lastTime;
+
     String userkey = "05037193ee4a460eb2e5ba8bc1e91a45";
 
     @Override
@@ -49,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             humidity = extras.getString("humidity");
             envHumidity = extras.getString("envHumidity");
             envTemperature = extras.getString("envTemperature");
+            lastDate = extras.getString("lastDate");
+            lastTime = extras.getString("lastTime");
         }
 
         volley = VolleySingleton.getInstance(this.getApplicationContext());
@@ -74,6 +78,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 bundlePlants.putString("humidity", humidity);
                 bundlePlants.putString("envHumidity", envHumidity);
                 bundlePlants.putString("envTemperature", envTemperature);
+                bundlePlants.putString("lastDate", lastDate);
+                bundlePlants.putString("lastTime", lastTime);
                 
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 registerIntent.putExtras(bundlePlants);
@@ -113,6 +119,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     bundlePlants.putString("humidity", humidity);
                     bundlePlants.putString("envHumidity", envHumidity);
                     bundlePlants.putString("envTemperature", envTemperature);
+                    bundlePlants.putString("lastDate", lastDate);
+                    bundlePlants.putString("lastTime", lastTime);
 
                     Intent intent = new Intent(LoginActivity.this, BottomNavigationActivity.class);
                     intent.putExtras(bundlePlants);

@@ -26,6 +26,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     String humidity, envHumidity, envTemperature;
 
+    String lastDate, lastTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             humidity = extras.getString("humidity");
             envHumidity = extras.getString("envHumidity");
             envTemperature = extras.getString("envTemperature");
+            lastDate = extras.getString("lastDate");
+            lastTime = extras.getString("lastTime");
         }
 
         volley = VolleySingleton.getInstance(this.getApplicationContext());
@@ -77,6 +81,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 bundlePlants.putString("humidity", humidity);
                 bundlePlants.putString("envHumidity", envHumidity);
                 bundlePlants.putString("envTemperature", envTemperature);
+                bundlePlants.putString("lastDate", lastDate);
+                bundlePlants.putString("lastTime", lastTime);
 
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 intent.putExtras(bundlePlants);

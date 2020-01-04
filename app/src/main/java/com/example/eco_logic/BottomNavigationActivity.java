@@ -60,6 +60,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
     String humidity, envHumidity, envTemperature;
 
+    String lastDate, lastTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +73,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
         // Weather data
         // Localización estatica, temporal
-        Double lat = 25.5260303;
-        Double lon = -103.3989277;
-        getCurrentInfo(lat, lon);
-        getNextDaysInfo(lat, lon);
+        String id = "3981254";
+        getCurrentInfo(id);
+        getNextDaysInfo(id);
 
         // Bottom nav listener
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -89,6 +90,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 humidity = extras.getString("humidity");
                 envHumidity = extras.getString("envHumidity");
                 envTemperature = extras.getString("envTemperature");
+                lastDate = extras.getString("lastDate");
+                lastTime = extras.getString("lastTime");
             }
 
             // Send data to plants fragment
@@ -96,6 +99,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
             bundlePlants.putString("humidity", humidity);
             bundlePlants.putString("envHumidity", envHumidity);
             bundlePlants.putString("envTemperature", envTemperature);
+            bundlePlants.putString("lastDate", lastDate);
+            bundlePlants.putString("lastTime", lastTime);
 
             Fragment plantsFragment = new PlantsFragment();
 
@@ -124,6 +129,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
                             bundlePlants.putString("humidity", humidity);
                             bundlePlants.putString("envHumidity", envHumidity);
                             bundlePlants.putString("envTemperature", envTemperature);
+                            bundlePlants.putString("lastDate", lastDate);
+                            bundlePlants.putString("lastTime", lastTime);
                             selectedFragment = new PlantsFragment();
                             selectedFragment.setArguments(bundlePlants);
                             break;
@@ -180,7 +187,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         fRequestQueue.add(request);
     }
 
-    private void getCurrentInfo(Double lat, Double lon) {
+    private void getCurrentInfo(String id) {
         String apikey = "627adac7108a365bdfa7df5853cb7e08";
 
         Uri.Builder builder = new Uri.Builder();
@@ -189,8 +196,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 .appendPath("data")
                 .appendPath("2.5")
                 .appendPath("weather")
-                .appendQueryParameter("lat", lat.toString())
-                .appendQueryParameter("lon", lon.toString())
+                .appendQueryParameter("id", id)
                 .appendQueryParameter("appid", apikey);
 
         String url = builder.build().toString();
@@ -229,7 +235,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         fRequestQueue.add(request);
     }
 
-    private void getNextDaysInfo(Double lat, Double lon) {
+    private void getNextDaysInfo(String id) {
         String apikey = "627adac7108a365bdfa7df5853cb7e08";
 
         Uri.Builder builder = new Uri.Builder();
@@ -238,8 +244,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 .appendPath("data")
                 .appendPath("2.5")
                 .appendPath("forecast")
-                .appendQueryParameter("lat", lat.toString())
-                .appendQueryParameter("lon", lon.toString())
+                .appendQueryParameter("id", id)
                 .appendQueryParameter("appid", apikey);
 
         String url = builder.build().toString();

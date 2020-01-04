@@ -121,6 +121,7 @@
             android:gravity="center_horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_humidity"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -178,14 +179,24 @@
                         android:textAlignment="center"
                         android:textSize="16sp" />
 
+<!--                    <TextView-->
+<!--                        android:id="@+id/last_date"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:drawableLeft="@drawable/ic_date"-->
+<!--                        android:drawablePadding="5dp"-->
+<!--                        android:textColor="@color/colorBlack"-->
+<!--                        android:textSize="16sp" />-->
+
                     <TextView
-                        android:id="@+id/tv_last_water"
-                        style="@style/TextBoldBlack"
+                        android:id="@+id/last_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_last_time"
-                        android:drawableTint="@color/colorBlack"
-                        android:text="15 minutos"
+                        android:drawableLeft="@drawable/ic_time"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                 </LinearLayout>

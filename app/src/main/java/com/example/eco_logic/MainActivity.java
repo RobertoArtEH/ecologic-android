@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     String humidity, envHumidity, envTemperature;
 
+    String lastDate, lastTime;
+
     String userkey = "05037193ee4a460eb2e5ba8bc1e91a45";
 
     @Override
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         volley = VolleySingleton.getInstance(this.getApplicationContext());
         fRequestQueue = volley.getRequestQueue();
 
+        getLastWater();
         getPlantHumidity();
         getEnvironmentHumidity();
         getEnvironmentTemperature();
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 bundlePlants.putString("humidity", humidity);
                 bundlePlants.putString("envHumidity", envHumidity);
                 bundlePlants.putString("envTemperature", envTemperature);
+                bundlePlants.putString("lastDate", lastDate);
+                bundlePlants.putString("lastTime", lastTime);
 
                 SharedPreferences preferences = getSharedPreferences("credenciales", MODE_PRIVATE);
 
@@ -79,6 +85,38 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     int getHumidity = response.getInt("value");
                     humidity = getHumidity + "%";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("OnErrorResponse: ", error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("X-AIO-Key", userkey);
+
+                return params;
+            }
+        };
+
+        fRequestQueue.add(request);
+    }
+
+    private void getEnvironmentTemperature() {
+        String url = "https://io.adafruit.com/api/v2/Cesar_utt/feeds/temperatura/data/last";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    int getTemperature = response.getInt("value");
+                    envTemperature = getTemperature + "°C";
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -135,16 +173,18 @@ public class MainActivity extends AppCompatActivity {
         fRequestQueue.add(request);
     }
 
-    private void getEnvironmentTemperature() {
-        String url = "https://io.adafruit.com/api/v2/Cesar_utt/feeds/temperatura/data/last";
+    public void getLastWater() {
+        String url = "http://ecologic.uttics.com/api/last";
 
-        // OpenWeather API
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    int getTemperature = response.getInt("value");
-                    envTemperature = getTemperature + "°C";
+                    JSONArray reports = response.getJSONArray("reports");
+                    JSONObject obj = reports.getJSONObject(0);
+
+                    lastDate = obj.getString("date");
+                    lastTime = obj.getString("time");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -154,16 +194,7 @@ public class MainActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("OnErrorResponse: ", error.toString());
             }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-
-                params.put("X-AIO-Key", userkey);
-
-                return params;
-            }
-        };
+        });
 
         fRequestQueue.add(request);
     }
